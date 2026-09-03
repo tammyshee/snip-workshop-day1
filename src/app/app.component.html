@@ -1,0 +1,67 @@
+<main class="page-shell">
+  <section class="hero">
+    <p class="eyebrow">SNIP / URL SHORTENER</p>
+    <h1>Make every link<br /><em>easy to remember.</em></h1>
+    <p class="subtitle">Paste a long URL. Get a clean, shareable link in seconds.</p>
+
+    <form class="shorten-form" (ngSubmit)="shorten()">
+      <label for="url">Your URL</label>
+      <div class="input-row">
+        <input
+          id="url"
+          name="url"
+          type="url"
+          placeholder="https://example.com/your-long-link"
+          [value]="url()"
+          (input)="url.set($any($event.target).value)"
+          [disabled]="loading()"
+          required
+        />
+        <button type="submit" [disabled]="loading() || !url().trim()">
+          {{ loading() ? 'Snipping...' : 'Snip it' }}
+        </button>
+      </div>
+    </form>
+
+    @if (error()) {
+      <p class="notice error" role="alert">{{ error() }}</p>
+    }
+    @if (createdLink(); as link) {
+      <p class="notice success">
+        Your short link:
+        <a [href]="link.shortUrl" target="_blank" rel="noreferrer">{{ link.shortUrl }}</a>
+      </p>
+    }
+  </section>
+
+  <section class="links-card">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">YOUR LINKS</p>
+        <h2>Recent snips</h2>
+      </div>
+      <span class="count">{{ links().length }} total</span>
+    </div>
+
+    @if (links().length) {
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Code</th><th>Original URL</th><th>Hits</th></tr>
+          </thead>
+          <tbody>
+            @for (link of links(); track link.code) {
+              <tr>
+                <td><a [href]="link.shortUrl" target="_blank" rel="noreferrer">{{ link.code }}</a></td>
+                <td class="original-url" [title]="link.url">{{ link.url }}</td>
+                <td>{{ link.hits }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <p class="empty-state">No links yet. Create your first snip above.</p>
+    }
+  </section>
+</main>
