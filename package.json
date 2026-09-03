@@ -1,0 +1,6 @@
+{
+  "name": "snip-backend",
+  "scripts": {
+    "start": "bun run server.js"
+  }
+}
