@@ -1,6 +1,6 @@
 # Snip repository rules
 
-Keep this file and `.github/copilot-instructions.md` identical and in sync.
+Keep this file and `CLAUDE.md` identical and in sync.
 
 Snip is a Git superproject: `main` pins one submodule per application layer.
 Each layer has its own orphan branch and files at that branch's root.
