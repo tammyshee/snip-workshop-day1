@@ -14,6 +14,11 @@ one Bun backend serves both an Angular web client and a Node CLI.
 The folders are submodules pointing to exact commits on branches in this
 repository. Storage is an in-memory map, so restarting the backend clears links.
 
+The `bundle/` submodule is generated from these three source layers by
+`node scripts/build-bundle.mjs`. It contains one Bun process serving the API,
+redirects, and built web UI, plus the CLI. Do not hand-edit generated bundle
+files.
+
 ## API
 
 | Method | Path | Response |
@@ -44,4 +49,10 @@ git submodule update --remote backend
 git add backend
 git commit -m "Bump backend submodule"
 git push
+```
+
+To regenerate and publish the bundle release:
+
+```bash
+node scripts/build-bundle.mjs --push
 ```
