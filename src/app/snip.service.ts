@@ -13,7 +13,10 @@ export interface Link {
 @Injectable({ providedIn: 'root' })
 export class SnipService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:3000/api/links';
+  private readonly apiUrl =
+    window.location.port === '4200'
+      ? 'http://localhost:3000/api/links'
+      : '/api/links';
 
   createLink(url: string): Observable<Link> {
     return this.http.post<Link>(this.apiUrl, { url });
