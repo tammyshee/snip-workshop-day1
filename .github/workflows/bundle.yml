@@ -1,0 +1,35 @@
+name: Build bundle
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main with submodules
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          submodules: recursive
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Configure Git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      # Source branches are not push triggers because this workflow exists only on main.
+      - name: Build and publish bundle
+        run: node scripts/build-bundle.mjs --push
